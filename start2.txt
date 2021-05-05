@@ -1,0 +1,5 @@
+http://192.168.1.206/bnflexcalc02/flexcalc69.html
+http://localhost/flexcalc69.html
+https://ru.hostings.info/schools/perenos-bazy-dannyh-mysql-na-drugoy-server.html
+c:\xampp\phpMyAdmin\config.inc.php
+c:\xampp\mySQL\data\mysql_error.log

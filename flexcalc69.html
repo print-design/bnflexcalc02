@@ -1,0 +1,873 @@
+﻿<!DOCTYPE html> 
+  <html lang="en"> 
+  <head> 
+    <meta charset="utf-8"> 
+    <title>Расчет цены этикетки для печати на флекс машине</title>
+		<script type="text/javascript">
+
+                   //------------------------------------------------------------------------------
+                   //функция установки  даты
+		   function jssetdata(clicked)
+		   {
+                        var setdata = document.getElementById('Календарь').value;
+		
+		        document.getElementById('Дата').value = setdata; 
+		
+			return false;
+		   }
+
+                   //----------------------------------------------------------------------------------
+                   //функция создания кроссбраузерного объекта XMLHTTP
+                   function getXmlHttp() {
+                        var xmlhttp;
+                        try { xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                            } catch (e) {
+                           try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                } catch (E) { xmlhttp = false;}
+                           }
+                           if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+                                xmlhttp = new XMLHttpRequest();
+                           }
+                           return xmlhttp;
+                   }
+
+                   //----------------------------------------------------------------------------------------------
+                   //функция запроса данных в базе и их отображение на форме
+		   function jsgetmysqlstroke(c)
+		   {
+                      //--------------------------------------------------------------
+                      //задание типа запроса (var c):
+                      // c = 1 - выбор записи с id = a
+                      // c = 2 - добавить новую запись
+                      // c = 3 - сохранить в базе данные c id = a
+                      // c = 4 - удалить запись c id = a
+                
+                      //var c=1;
+                      //---------------------------------------------------------------
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var b = parseInt(document.getElementById('AllZapisi').value);
+
+
+                      var d1 = document.getElementById('Менеджер').value;
+                      var d2 = document.getElementById('Дата').value; 
+
+						 
+		      var d3 = document.getElementById('Наименование_заказа').value; 
+                      var d4 = document.getElementById('Тип_бумаги_пленки').value; 
+		      var d5 = document.getElementById('Ширина_этикетки').value; 	
+
+                      var d6 = document.getElementById('Высота_этикетки').value; 	
+
+                      var d7 = document.getElementById('Общее_количество_этикеток_тираж').value; 	
+                      var d8 = document.getElementById('Количество_этикеток_на_валу').value; 	
+                      var d9 = document.getElementById('Число_красок').value; 	
+                      var e1 = document.getElementById('Рапорт_вала').value; 	
+
+                      var e2 = document.getElementById('Ширина_роля_бумаги').value; 	
+                      var e3 = document.getElementById('Цена_бумаги_за_м2').value; 	
+                      var e4 = document.getElementById('Формы').value; 	
+                      var e5 = document.getElementById('Стоимость_бумаги_вместе_с_приладкой').value; 	
+                      var e6 = document.getElementById('Стоимость_пленок').value; 	
+
+                      var e7 = document.getElementById('Стоимость_форм').value; 	
+                      var e8 = document.getElementById('Стоимость_тиража').value; 	
+                      var e9 = document.getElementById('Погонные_метры_плюс_приладка').value; 	
+                      var f1 = document.getElementById('Квадратные_метры').value; 	
+                      var f2 = document.getElementById('Площадь_этикетки').value; 
+
+                      var f3 = document.getElementById('Итого_себестоимость').value; 	
+                      var f4 = document.getElementById('Прибыль_проц').value; 
+                      var f5 = document.getElementById('Прибыль_руб').value; 	
+                      var f6 = document.getElementById('Общая_стоимость').value;
+                      var f7 = document.getElementById('Цена_за_этикетку').value; 	
+                      var f8 = document.getElementById('Общее_количество_этикеток_штук').value; 	
+                      var f9 = document.getElementById('Рентабельность').value; 
+
+
+
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+                      
+                      if (isNaN(b)==true) b=1;
+                      if (b<=0) b=1;
+
+                      if (a>b) a=b;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      document.getElementById('AllZapisi').value=b;
+
+                      var xmlhttp = getXmlHttp(); // Создаём объект XMLHTTP
+                      xmlhttp.open('POST', 'flexcalc69.php', true); // Открываем асинхронное соединение
+
+                      xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Отправляем кодировку
+
+                      xmlhttp.send("a=" + encodeURIComponent(a) + "&c=" + encodeURIComponent(c) + "&d1=" + encodeURIComponent(d1) + "&d2=" + encodeURIComponent(d2)
+                                        + "&d3=" + encodeURIComponent(d3) + "&d4=" + encodeURIComponent(d4) + "&d5=" + encodeURIComponent(d5)
+                                        + "&d6=" + encodeURIComponent(d6) + "&d7=" + encodeURIComponent(d7) + "&d8=" + encodeURIComponent(d8)
+                                        + "&d9=" + encodeURIComponent(d9) + "&e1=" + encodeURIComponent(e1) + "&e2=" + encodeURIComponent(e2)
+                                        + "&e3=" + encodeURIComponent(e3) + "&e4=" + encodeURIComponent(e4) + "&e5=" + encodeURIComponent(e5)
+                                        + "&e6=" + encodeURIComponent(e6) + "&e7=" + encodeURIComponent(e7) + "&e8=" + encodeURIComponent(e8)
+                                        + "&e9=" + encodeURIComponent(e9) + "&f1=" + encodeURIComponent(f1) + "&f2=" + encodeURIComponent(f2)
+                                        + "&f3=" + encodeURIComponent(f3) + "&f4=" + encodeURIComponent(f4) + "&f5=" + encodeURIComponent(f5)
+                                        + "&f6=" + encodeURIComponent(f6) + "&f7=" + encodeURIComponent(f7) + "&f8=" + encodeURIComponent(f8)
+                                        + "&f9=" + encodeURIComponent(f9));
+
+                                        //+ "&f2=" + encodeURIComponent(f2)
+                                        //+ "&f3=" + encodeURIComponent(f3) + "&f4=" + encodeURIComponent(f4) + "&f5=" + encodeURIComponent(f5)
+                                        //+ "&f6=" + encodeURIComponent(f6) + "&f7=" + encodeURIComponent(f7) + "&f8=" + encodeURIComponent(f8)
+                                        //+ "&f9=" + encodeURIComponent(f9)); 
+
+                      xmlhttp.onreadystatechange = function() { // Ждём ответа от сервера
+                      if (xmlhttp.readyState == 4) { // Ответ пришёл
+                          if(xmlhttp.status == 200) { // Сервер вернул код 200 (что хорошо)
+                              
+                              var myObj = JSON.parse(xmlhttp.responseText);
+
+                              var numzapisibaza = parseInt(myObj[0]);                              
+                              var menedjer = myObj[1];                              
+                              var sdata = myObj[2];
+		              var naimzakaza = myObj[3];
+		              var tipbumagi = myObj[4];		   
+		              var Ewidth = parseFloat(myObj[5]);
+		              var eheigt = parseFloat(myObj[6]);
+		              var tiraj = parseFloat(myObj[7]);
+		              var numetikval = parseFloat(myObj[8]);
+		              var numcolor = parseFloat(myObj[9]);
+		              var raport = parseFloat(myObj[10]);
+		              var widthrol = parseFloat(myObj[11]);
+		              var costpaper = parseFloat(myObj[12]);
+		              var formy = parseInt(myObj[13]);
+		              var costpaperprilad = parseFloat(myObj[14]);
+		              var costplenok = parseFloat(myObj[15]);
+		              var costform = parseFloat(myObj[16]);
+		              var costtiraj = parseFloat(myObj[17]);
+		              var pogonetripriladka = parseFloat(myObj[18]);
+		              var kvadratmetri = parseFloat(myObj[19]);
+		              var plojadetiketki = parseFloat(myObj[20]);                      
+		              var itogo = parseFloat(myObj[21]);
+		              var pribilproc = parseFloat(myObj[22]);
+		              var pribilrub = parseFloat(myObj[23]);
+		              var allcost = parseFloat(myObj[24]);
+		              var etikcost = parseFloat(myObj[25]);
+		              var alletiketok = parseFloat(myObj[26]);
+		              var rentab = parseFloat(myObj[27]);
+
+                              var allzapisi = parseInt(myObj[28]);
+
+                              //---------------------------------------------------------
+                              document.getElementById('Номер_записи_в_базе').value = numzapisibaza;
+
+                              document.getElementById('Менеджер').value=menedjer;
+                              document.getElementById('Дата').value = sdata; 
+						 
+		              document.getElementById('Наименование_заказа').value = naimzakaza; 
+                              document.getElementById('Тип_бумаги_пленки').value = tipbumagi; 
+		              document.getElementById('Ширина_этикетки').value = Ewidth; 	
+
+                              document.getElementById('Высота_этикетки').value = eheigt; 	
+                              document.getElementById('Общее_количество_этикеток_тираж').value = tiraj; 	
+                              document.getElementById('Количество_этикеток_на_валу').value = numetikval; 	
+                              document.getElementById('Число_красок').value = numcolor; 	
+                              document.getElementById('Рапорт_вала').value = raport; 	
+
+
+                              document.getElementById('Ширина_роля_бумаги').value = widthrol; 	
+                              document.getElementById('Цена_бумаги_за_м2').value = costpaper; 	
+                              document.getElementById('Формы').value = formy; 	
+                              document.getElementById('Стоимость_бумаги_вместе_с_приладкой').value = costpaperprilad; 	
+                              document.getElementById('Стоимость_пленок').value = costplenok; 	
+
+                              document.getElementById('Стоимость_форм').value = costform; 	
+                              document.getElementById('Стоимость_тиража').value = costtiraj; 	
+                              document.getElementById('Погонные_метры_плюс_приладка').value = pogonetripriladka; 	
+                              document.getElementById('Квадратные_метры').value = kvadratmetri; 	
+                              document.getElementById('Площадь_этикетки').value = plojadetiketki; 
+
+                              document.getElementById('Итого_себестоимость').value = itogo; 	
+                              document.getElementById('Прибыль_проц').value = pribilproc; 
+                              document.getElementById('Прибыль_руб').value = pribilrub; 	
+                              document.getElementById('Общая_стоимость').value = allcost;
+                              document.getElementById('Цена_за_этикетку').value = etikcost; 	
+                              document.getElementById('Общее_количество_этикеток_штук').value = alletiketok; 	
+                              document.getElementById('Рентабельность').value = rentab; 
+
+                              document.getElementById('AllZapisi').value = allzapisi;
+	
+                           }
+                         }
+                       };
+		
+		       return false;
+		   }
+                  
+                  //-----------------------------------------------------------------------------------------------
+                  //функция расчета стоимости тиража
+		  function calculation1() {
+
+                        //Исходные данные
+			var widh_etik = parseInt(document.getElementById('Ширина_этикетки').value);
+			var height_etik = parseInt(document.getElementById('Высота_этикетки').value);
+
+                        //Ввод данных integer
+                        //var m_pX8 = parseInt(document.getElementById('Общее_количество_этикеток_тираж').value);
+                        //var m_pX1 = parseInt(document.getElementById('Количество_этикеток_на_валу').value);
+                        //var m_pX2 = parseInt(document.getElementById('Число_красок').value);
+                        //var m_pX9 = parseInt(document.getElementById('Рапорт_вала').value);
+                        //var m_pX10= parseInt(document.getElementById('Ширина_роля_бумаги').value);
+                        //var m_pX4 = parseInt(document.getElementById('Цена_бумаги_за_м2').value);
+
+
+                        //Ввод данных float
+                        var m_pX8 = parseFloat(document.getElementById('Общее_количество_этикеток_тираж').value);
+                        var m_pX1 = parseFloat(document.getElementById('Количество_этикеток_на_валу').value);
+                        var m_pX2 = parseFloat(document.getElementById('Число_красок').value);
+                        var m_pX9 = parseFloat(document.getElementById('Рапорт_вала').value);
+                        var m_pX10= parseFloat(document.getElementById('Ширина_роля_бумаги').value);
+                        var m_pX4 = parseFloat(document.getElementById('Цена_бумаги_за_м2').value);
+
+                        var m_Form= parseInt(document.getElementById('Формы').value);
+
+                        //Проверка исходных данных на корректность
+			if (isNaN(widh_etik)==true) widh_etik=0;
+			if (isNaN(height_etik)==true) height_etik=0;
+
+                        if (isNaN(m_pX8)==true) m_pX8=1;
+                        if (m_pX8==0) m_pX8=1;
+                        
+                        if (isNaN(m_pX1)==true) m_pX1=1;
+                        if (m_pX1==0) m_pX1=1;
+
+                        if (isNaN(m_pX2)==true) m_pX2=0;
+
+                        if (isNaN(m_pX9)==true) m_pX9=1;
+                        if (m_pX9==0) m_pX9=1;
+
+                        if (isNaN(m_pX10)==true) m_pX10=0;
+
+                        if (isNaN(m_pX4)==true) m_pX4=0;
+
+                        if (isNaN(m_Form)==true) m_Form=1; 
+                        if (isNaN(m_Form)>2) m_Form=2;
+
+                        //Расчеты
+                        //Площадь этикетки
+			var Setik = widh_etik * height_etik;
+
+                        //1.Стоимость бумаги
+                        var NumOborotovVala = m_pX8/m_pX1;
+                        var PogonMetry=NumOborotovVala*m_pX9/1000;
+                        var PogonMetryAndPriladka=PogonMetry+50*m_pX2+20*(PogonMetry/1000);
+                        var m_pX5=PogonMetryAndPriladka;
+
+                        //Квадратные метры
+                        var MKB=PogonMetryAndPriladka*m_pX10/1000;
+	                var m_pX6=MKB;
+
+	                //Стоимость бумаги с приладкой
+	                var m_pY1=MKB*m_pX4;
+
+                        //2.Стоимость пленок = число красок * (Рапорт вала/10 +2)*(Ширина роля бумаги/10 +2)
+	                var pl=m_pX2*(m_pX9/10 + 2)*(m_pX10/10 + 2);
+                        //27.01.15
+                        var m_pY2=0;
+                        if (m_Form==1) m_pY2=pl*0.23; //формы - наши
+	                else m_pY2=0;                 //формы - репроцентр
+
+                        //3.Стоимость форм
+                        var m_pY7=0;
+	                //c 20.01.2015  
+	                if (m_Form==1) m_pY7=pl*1.60; //формы - наши
+	                else m_pY7=pl*1.40;           //формы - репроцентр
+
+                        //4.Стоимость тиража
+	                var m_pY8=0;
+	                //c 20.01.2015
+	                m_pY8=PogonMetry*700/(60*30) + 700*m_pX2 + MKB*m_pX2*0.6;
+
+                        //5.ИТОГО, cебестоимость.
+                        var m_pY10=0;
+	                //21_01_15
+	                if (m_Form==1) m_pY10=m_pY1+m_pY2+m_pY7+m_pY8;  //формы - наши
+	                else m_pY10=m_pY1+m_pY7+m_pY8;                  //формы - репроцентр
+
+	                //Прибыль,% 16.01.2008
+                        var m_pY3=0;
+	                if (m_pY10<3000) m_pY3=150;
+	                if ((  3000<=m_pY10)&&(m_pY10< 10000)) m_pY3=100;
+	                if (( 10000<=m_pY10)&&(m_pY10< 20000)) m_pY3=90;
+	                if (( 20000<=m_pY10)&&(m_pY10< 30000)) m_pY3=80;
+	                if (( 30000<=m_pY10)&&(m_pY10< 40000)) m_pY3=70;
+	                if (( 40000<=m_pY10)&&(m_pY10< 50000)) m_pY3=60;
+	                if (( 50000<=m_pY10)&&(m_pY10< 60000)) m_pY3=55;
+	                if (( 60000<=m_pY10)&&(m_pY10< 70000)) m_pY3=50;
+	                if (( 70000<=m_pY10)&&(m_pY10< 80000)) m_pY3=45;
+	                if (( 80000<=m_pY10)&&(m_pY10<100000)) m_pY3=40;
+	                if ((100000<=m_pY10)&&(m_pY10<120000)) m_pY3=35;
+	                if ((120000<=m_pY10)&&(m_pY10<150000)) m_pY3=33;
+	                if ((150000<=m_pY10)&&(m_pY10<500000)) m_pY3=30;
+	                if ( 500000<=m_pY10) m_pY3=30;
+
+	                //Прибыль,руб
+	                var m_pY6=m_pY10*m_pY3/100;
+
+	                //Общая стоимость
+	                var m_pY4=m_pY10+m_pY6;
+
+	                //общее количество этикеток
+                        var m_pY11=m_pX8; 
+
+	                //Цена за этикетку
+                        var m_pY5=0;
+	                if (m_pY11>0) m_pY5=m_pY4/m_pY11;
+	                else m_pY5=0;
+                        
+                        //Рентабельность
+                        var Rentab=0;
+
+                         
+                        //////////////////////////////////////////////////////////////////////// 
+                        //Отображение на форме  
+                        document.getElementById('Стоимость_бумаги_вместе_с_приладкой').value = m_pY1; 
+                        document.getElementById('Стоимость_пленок').value = m_pY2;
+                        document.getElementById('Стоимость_форм').value = m_pY7;
+                        document.getElementById('Стоимость_тиража').value = m_pY8;
+                        document.getElementById('Погонные_метры_плюс_приладка').value = m_pX5;
+                        document.getElementById('Квадратные_метры').value = m_pX6;
+                        document.getElementById('Площадь_этикетки').value = Setik;
+                        document.getElementById('Итого_себестоимость').value = m_pY10;
+                        document.getElementById('Прибыль_проц').value = m_pY3;
+                        document.getElementById('Прибыль_руб').value = m_pY6;
+                        document.getElementById('Общая_стоимость').value = m_pY4;
+                        document.getElementById('Цена_за_этикетку').value = m_pY5;
+                        document.getElementById('Общее_количество_этикеток_штук').value = m_pY11;
+                        document.getElementById('Рентабельность').value = Rentab;
+		}
+
+                //----------------------------------------------
+                //функция печати документа(страницы)
+                  function print_doc() {
+                        window.print() ;
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция запроса первой строки данных в базе и их отображение на форме
+		function jsgetmysqlstrokeFirst(clicked)
+		{
+
+                      //var a = document.getElementById("ViborZapisi").value;
+                      var c=1;
+
+                      document.getElementById("ViborZapisi").value=1;
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция запроса последней строки данных в базе и их отображение на форме
+		function jsgetmysqlstrokeLast(clicked)
+		{
+
+                      //var a = document.getElementById("ViborZapisi").value;
+                      var c=1;
+
+                      var a = parseInt(document.getElementById('AllZapisi').value);
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция запроса текущей строки  данных в базе и их отображение на форме
+		function jsgetmysqlstrokeTmp(clicked)
+		{
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var c=1;
+
+                      //var a = document.getElementById('AllZapisi').value;
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;                      
+
+                      document.getElementById("ViborZapisi").value=a;
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция запроса текущей строки -1 данных в базе и их отображение на форме
+		function jsgetmysqlstrokeTmpMinus1(clicked)
+		{
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var c=1;
+
+                      //var a = document.getElementById('AllZapisi').value;
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+                      
+                      if (a>1) a=a-1;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция запроса текущей строки +1 данных в базе и их отображение на форме
+		function jsgetmysqlstrokeTmpPlus1(clicked)
+		{
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var b = parseInt(document.getElementById('AllZapisi').value);
+                      var c=1;
+
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+                      
+                      if (isNaN(b)==true) b=1;
+                      if (b<=0) b=1;
+
+                      if (a<b) a=a+1;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      document.getElementById('AllZapisi').value=b;
+
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция удаления текущей записи
+		function jsgetmysqlstrokeDelete(clicked)
+		{
+
+                      //--------------------------------------------------------------
+                      //задание типа запроса (var c):
+                      // c = 1 - выбор записи с id = a
+                      // c = 2 - добавить новую запись
+                      // c = 3 - сохранить в базе данные c id = a
+                      // c = 4 - удалить запись c id = a
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var b = parseInt(document.getElementById('AllZapisi').value);
+                      var c=4;
+
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+                      
+                      if (isNaN(b)==true) b=1;
+                      if (b<=0) b=1;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      document.getElementById('AllZapisi').value=b;
+
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция добавления новой записи
+		function jsgetmysqlstrokeInsert(clicked)
+		{
+
+                      //--------------------------------------------------------------
+                      //задание типа запроса (var c):
+                      // c = 1 - выбор записи с id = a
+                      // c = 2 - добавить новую запись
+                      // c = 3 - сохранить в базе данные c id = a
+                      // c = 4 - удалить запись c id = a
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var b = parseInt(document.getElementById('AllZapisi').value);
+                      var c=2;
+
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+                      
+                      if (isNaN(b)==true) b=1;
+                      if (b<=0) b=1;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      document.getElementById('AllZapisi').value=b;
+
+                      jsgetmysqlstroke(c);
+                }
+
+                //----------------------------------------------------------------------------------------------
+                //функция записи в базу
+		function jsgetmysqlstrokeSave(clicked)
+		{
+
+                      //--------------------------------------------------------------
+                      //задание типа запроса (var c):
+                      // c = 1 - выбор записи с id = a
+                      // c = 2 - добавить новую запись
+                      // c = 3 - сохранить в базе данные c id = a
+                      // c = 4 - удалить запись c id = a
+
+                      var a = parseInt(document.getElementById("ViborZapisi").value);
+                      var b = parseInt(document.getElementById('AllZapisi').value);
+                      var c=3;
+
+                      if (isNaN(a)==true) a=1;
+                      if (a<=0) a=1;
+                      
+                      if (isNaN(b)==true) b=1;
+                      if (b<=0) b=1;
+
+                      document.getElementById("ViborZapisi").value=a;
+                      document.getElementById('AllZapisi').value=b;
+
+                      jsgetmysqlstroke(c);
+                }
+
+                //---------------------------------------------
+
+		</script>
+    <style>
+      #Менеджер{
+         position: relative;
+         width: 300px; 
+         top:0px;
+         left:62px;
+      } 
+      #Дата{
+         position: relative;
+         width: 299px;
+         top:0px;
+         left:101px;
+      } 
+      #Наименование_заказа{
+         position: relative;
+         width: 300px;
+         top:0px;
+         left:20px;
+      } 
+      #Тип_бумаги_пленки{
+         position: relative;
+         width: 300px;
+         top:0px;
+         left:30px;
+      } 
+      #Ширина_этикетки{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:210px;
+      } 
+      #Высота_этикетки{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:217px;
+      } 
+      #Общее_количество_этикеток_тираж{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:120px;
+      }
+      #Количество_этикеток_на_валу{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:167px;
+      }
+      #Число_красок{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:275px;
+      }
+      #Рапорт_вала{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:249px;
+      }
+      #Ширина_роля_бумаги{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:188px;
+      }
+      #Цена_бумаги_за_м2{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:241px;
+      }
+      #Формы{
+         position: relative;
+         width: 100px;
+         top:0px;
+         left:158px;
+      }
+      #Календарь{
+         position: relative;
+         width: 150px;
+         top:0px;
+         left:60px;
+      } 
+      #Стоимость_бумаги_вместе_с_приладкой{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:10px;
+      }
+      #Стоимость_пленок{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:147px;
+      }
+
+      #Стоимость_форм{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:155px;
+      }
+      #Стоимость_тиража{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:146px;
+      }
+      #Погонные_метры_плюс_приладка{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:63px;
+      }
+      #Квадратные_метры{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:148px;
+      }
+      #Площадь_этикетки{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:144px;
+      }
+      #Итого_себестоимость{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:126px;
+      }
+      #Прибыль_проц{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:221px;
+      }
+      #Прибыль_руб{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:211px;
+      }
+      #Общая_стоимость{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:154px;
+      }
+      #Цена_за_этикетку{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:160px;
+      }
+      #Общее_количество_этикеток_штук{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:75px;
+      }
+      #Рентабельность{
+         position: relative;
+         width: 110px;
+         top:0px;
+         left:176px;
+      } 
+      #Номер_записи_в_базе{
+         position: relative;
+         width: 50px;
+         top:0px;
+         left:10px;
+      } 
+
+      #ViborZapisi{
+         position: relative;
+         width: 50px;
+         top:0px;
+         left:10px;
+      } 
+
+      #AllZapisi{
+         position: relative;
+         width: 50px;
+         top:0px;
+         left:10px;
+      } 
+
+    </style> 
+  </head> 
+  <body bgcolor="#c0c0c0"> 
+
+
+    <form method="post" action="flexcalc69.php">
+
+    <div><label "Расчет цены этикетки для печати на флекс машинах Принт-Дизайн (версия 01 от 22.05.2019)" 
+          style = "top:15px; left:250px; position:absolute">Расчет цены этикетки для печати на флекс машинах Принт-Дизайн (версия 01 от 22.05.2019)</label> 
+    </div>
+    <div><label for= "Менеджер" style = "top:50px; left:20px; position:absolute">Менеджер:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <input type="text" name="Менеджер" id="Менеджер"></label> 
+    </div> 
+    <div><label for= "Дата" style = "top:75px; left:20px; position:absolute">Дата:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <input type="text" name="Дата" id="Дата"></label> 
+    </div> 
+    <div><label for="Наименование заказа" style = "top:100px; left:20px; position:absolute">Наименование заказа: 
+      <input type="text" name="Наименование заказа" id="Наименование_заказа"></label> 
+    </div> 
+    <div><label for="Тип бумаги, пленки" style = "top:125px; left:20px; position:absolute">Тип бумаги, пленки: 
+      <input type="text" name="Тип бумаги, пленки" id="Тип_бумаги_пленки"></label> 
+    </div> 
+    <div><label for="Ширина этикетки (мм)" style = "top:150px; left:20px; position:absolute">Ширина этикетки (мм): 
+      <input type="number" step="any" name="Ширина этикетки (мм)" id="Ширина_этикетки"></label> 
+    </div> 
+    <div><label for="Высота этикетки (мм)" style = "top:175px; left:20px; position:absolute">Высота этикетки (мм): 
+      <input type="number" step="any" name="Высота этикетки (мм)" id="Высота_этикетки"></label> 
+    </div> 
+    <div><label for="Общее количество этикеток (тираж)" style = "top:200px; left:20px; position:absolute">Общее количество этикеток (тираж): 
+      <input type="number" step="any" name="Общее количество этикеток (тираж)" id="Общее_количество_этикеток_тираж"></label> 
+    </div> 
+    <div><label for="Количество этикеток на валу" style = "top:225px; left:20px; position:absolute">Количество этикеток на валу: 
+      <input type="number" step="any" name="Количество этикеток на валу" id="Количество_этикеток_на_валу"></label> 
+    </div> 
+    <div><label for="Число красок" style = "top:250px; left:20px; position:absolute">Число красок: 
+      <input type="number" step="any" name="Число красок" id="Число_красок"></label> 
+    </div> 
+    <div><label for="Рапорт вала (мм)" style = "top:275px; left:20px; position:absolute">Рапорт вала (мм): 
+      <input type="number" step="any" name="Рапорт вала (мм)" id="Рапорт_вала"></label> 
+    </div> 
+    <div><label for="Ширина роля бумаги (мм)" style = "top:300px; left:20px; position:absolute">Ширина роля бумаги (мм): 
+      <input type="number" step="any" name="Ширина роля бумаги (мм)" id="Ширина_роля_бумаги"></label> 
+    </div> 
+    <div><label for="Цена бумаги за м2" style = "top:325px; left:20px; position:absolute">Цена бумаги за м2: 
+      <input type="number" step="any" name="Цена бумаги за м2" id="Цена_бумаги_за_м2"></label> 
+    </div> 
+    <div><label for="Формы (наши-1, репропарк-2)" style = "top:350px; left:20px; position:absolute">Формы (наши-1, репропарк-2): 
+      <input type="number" step="any" name="Формы (наши-1, репропарк-2)" id="Формы"></label> 
+    </div> 
+   <div><label for= "Календарь" style = "top:375px; left:20px; position:absolute">Календарь:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <input type="date" name="Календарь" id="Календарь"></label> 
+    </div> 
+
+    <div><label for="Стоимость бумаги вместе с приладкой (руб)" style = "top:50px; left:550px; position:absolute">Стоимость бумаги вместе с приладкой (руб): 
+      <input type="number" step="any" name="Стоимость бумаги вместе с приладкой (руб)" id="Стоимость_бумаги_вместе_с_приладкой"></label> 
+    </div> 
+    <div><label for="Стоимость пленок (руб)" style = "top:75px; left:550px; position:absolute">Стоимость пленок (руб): 
+      <input type="number" step="any" name="Стоимость пленок (руб)" id="Стоимость_пленок"></label> 
+    </div> 
+
+    <div><label for="Стоимость форм (руб)" style = "top:100px; left:550px; position:absolute">Стоимость форм (руб)): 
+      <input type="number" step="any" name="Стоимость форм (руб)" id="Стоимость_форм"></label> 
+    </div>
+    <div><label for="Стоимость тиража (руб)" style = "top:125px; left:550px; position:absolute">Стоимость тиража (руб): 
+      <input type="number" step="any" name="Стоимость тиража (руб)" id="Стоимость_тиража"></label> 
+    </div>
+    <div><label for="Погонные метры плюс приладка (м)" style = "top:150px; left:550px; position:absolute">Погонные метры плюс приладка (м): 
+      <input type="number" step="any" name="Погонные метры плюс приладка (м)" id="Погонные_метры_плюс_приладка"></label> 
+    </div>
+    <div><label for="Квадратные метры (м2)" style = "top:175px; left:550px; position:absolute">Квадратные метры (м2): 
+      <input type="number" step="any" name="Квадратные метры (м2)" id="Квадратные_метры"></label> 
+    </div>
+    <div><label for="Площадь этикетки (мм2)" style = "top:200px; left:550px; position:absolute">Площадь этикетки (мм2): 
+      <input type="number" step="any" name="Площадь этикетки (мм2)" id="Площадь_этикетки"></label> 
+    </div>
+    <div><label for="Итого, себестоимость (руб)" style = "top:225px; left:550px; position:absolute">Итого, себестоимость (руб): 
+      <input type="number" step="any" name="Итого, себестоимость (руб)" id="Итого_себестоимость"></label> 
+    </div>
+    <div><label for="Прибыль (%)" style = "top:250px; left:550px; position:absolute">Прибыль (%): 
+      <input type="number" step="any" name="Прибыль (%)" id="Прибыль_проц"></label> 
+    </div>
+    <div><label for="Прибыль (руб)" style = "top:275px; left:550px; position:absolute">Прибыль (руб): 
+      <input type="number" step="any" name="Прибыль (руб)" id="Прибыль_руб"></label> 
+    </div>
+    <div><label for="Общая стоимость (руб)" style = "top:300px; left:550px; position:absolute">Общая стоимость (руб): 
+      <input type="number" step="any" name="Общая стоимость (руб)" id="Общая_стоимость"></label> 
+    </div>
+    <div><label for="Цена за этикетку (руб)" style = "top:325px; left:550px; position:absolute">Цена за этикетку (руб): 
+      <input type="number" step="any" name="Цена за этикетку (руб)" id="Цена_за_этикетку"></label> 
+    </div>
+    <div><label for="Общее количество этикеток (штук)" style = "top:350px; left:550px; position:absolute">Общее количество этикеток (штук): 
+      <input type="number" step="any" name="Общее количество этикеток (штук)" id="Общее_количество_этикеток_штук"></label> 
+    </div>
+    <div><label for="Рентабельность (%)" style = "top:375px; left:550px; position:absolute">Рентабельность (%): 
+      <input type="number" step="any" name="Рентабельность (%)" id="Рентабельность"></label> 
+    </div>
+
+    <button type = "button" name = "button1" style = "width: 70px; height:30px; top:450px; left:20px; position:absolute" onclick="calculation1();">
+			<b>Расчет</b>
+		</button><br><br>
+
+    <button type = "button" name = "button2" style = "width: 70px; height:30px; top:450px; left:100px; position:absolute" onclick="print_doc()">
+			<b>Печать</b>
+		</button><br><br>
+
+    <button type = "button" name = "button10" style = "width: 180px; height:30px; top:450px; left:180px; position:absolute" onclick="jsgetmysqlstrokeSave()">
+			<b>Запись в базу</b>
+		</button><br><br>
+
+    <button type = "button" name = "button3" style = "width: 120px; height:30px; top:450px; left:376px; position:absolute" onclick="jsgetmysqlstrokeInsert()">
+			<b>Новый заказ</b>
+		</button><br><br>
+
+    <button type = "button" name = "button4" style = "width: 30px; height:30px; top:410px; left:376px; position:absolute" onclick="jsgetmysqlstrokeFirst()">
+			<b>&lt&lt</b>
+		</button><br><br>
+
+    <button type = "button" name = "button5" style = "width: 30px; height:30px; top:410px; left:406px; position:absolute" onclick="jsgetmysqlstrokeTmpMinus1()">
+			<b>&lt</b>
+		</button><br><br>
+
+    <button type = "button" name = "button6" style = "width: 30px; height:30px; top:410px; left:436px; position:absolute" onclick="jsgetmysqlstrokeTmpPlus1()">
+			<b>&gt</b>
+		</button><br><br>
+
+    <button type = "button" name = "button7" style = "width: 30px; height:30px; top:410px; left:466px; position:absolute" onclick="jsgetmysqlstrokeLast()">
+			<b>&gt&gt</b>
+		</button><br><br>
+
+    <div><label for="Номер записи в базе" style = "top:410px; left:770px; position:absolute">Номер записи в базе: 
+      <input type="number" step="1" name="Номер записи в базе" id="Номер_записи_в_базе"></label> 
+    </div>
+
+    <div><label for="Выбор записи" style = "top:410px; left:506px; position:absolute">Выбор записи: 
+      <input type="number" step="1" name="Выбор записи" id="ViborZapisi"></label> 
+    </div>
+
+    <button type = "button" name = "button8" style = "width: 50px; height:30px; top:410px; left:685px; position:absolute" onclick="jsgetmysqlstrokeTmp()">
+			<b>&gt&gt&gt</b>
+		</button><br><br>
+
+    <button type = "button" name = "button9" style = "width: 150px; height:30px; top:450px; left:830px; position:absolute" onclick="jsgetmysqlstrokeDelete()">
+			<b>Удалить запись</b>
+		</button><br><br>
+
+    <button type = "button" name = "button10" style = "width: 140px; height:28px; top:375px; left:356px; position:absolute" onclick="jssetdata()">
+			<b>Установить дату</b>
+		</button><br><br>
+
+    <div><label for="Всего записей" style = "top:450px; left:506px; position:absolute">Всего записей: 
+      <input type="number" step="1" name="Всего записей" id="AllZapisi"></label> 
+    </div>
+
+
+    </form> 
+
+  </body> 
+</html> 
