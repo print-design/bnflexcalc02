@@ -48,18 +48,24 @@
           $db_host = 'localhost';  //путь к серверу
           $db_name = 'bnexample1'; //база
           $db_username = 'root';
-          $db_password = '123456';
+          $db_password = '';
           $db_table_to_show = 'flexcalculation1'; //таблица в базе
 
           // соединяемся с сервером базы данных
-          $connect_to_db = mysql_connect($db_host, $db_username, $db_password)
-          or die("Could not connect: " . mysql_error());
+          //$connect_to_db = mysql_connect($db_host, $db_username, $db_password)
+          // mysql_connect($db_host, $db_username, $db_password)
+          //or die("Could not connect: " . mysql_error());
+          
 
-          // подключаемся к базе данных
-          mysql_select_db($db_name, $connect_to_db)
-          or die("Could not select DB: " . mysql_error());
+                  // подключаемся к базе данных
+          //mysql_select_db($db_name, $connect_to_db)
+          //or die("Could not select DB: " . mysql_error());
 
-          mysql_set_charset("utf8");
+          //mysql_set_charset("utf8");
+          
+          $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
+          if($conn->connect_error) die("Could not connect: " . $conn->connect_error);
+          $conn->query('set names utf8');
 
           //-------------------------------------------------------
           if ($c==4)
@@ -68,7 +74,8 @@
 
             $query_delete ="DELETE FROM $db_table_to_show WHERE id in ($qr_id)";            
 
-            mysql_query ($query_delete);
+            //mysql_query ($query_delete);
+            $conn->query($query_delete);
 
             //Пересчет (сквозная нумерация после удаления строки) id таблицы 
             //(для одной таблицы не связанной с другими таблицы базы!)
@@ -87,15 +94,24 @@
             //после удаления любой строки. Помни, ID строк теперь пронумерованы
             //подряд с первой по последнюю, т.е ID строк изменилось ! 
             $query_auto1 ="ALTER TABLE $db_table_to_show MODIFY `ID` INT(11)";
-            mysql_query ($query_auto1);
+            //mysql_query ($query_auto1);
+            $conn->query($query_auto1);
+            
             $query_auto2 ="ALTER TABLE $db_table_to_show DROP PRIMARY KEY"; 
-            mysql_query ($query_auto2);
+            //mysql_query ($query_auto2);
+            $conn->query($query_auto2);
+            
             $query_auto3 ="UPDATE $db_table_to_show SET `ID`='0'";
-            mysql_query ($query_auto3);
+            //mysql_query ($query_auto3);
+            $conn->query($query_auto3);
+            
             $query_auto4 ="ALTER TABLE $db_table_to_show AUTO_INCREMENT=1"; 
-            mysql_query ($query_auto4); 
+            //mysql_query ($query_auto4); 
+            $conn->query($query_auto4);
+            
             $query_auto5 ="ALTER TABLE $db_table_to_show MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY";
-            mysql_query ($query_auto5);
+            //mysql_query ($query_auto5);
+            $conn->query($query_auto5);
           };
 
           //-------------------------------------------------------
@@ -132,7 +148,8 @@
 
                            WHERE id in ($qr_id)";
 
-            mysql_query ($query_save);
+            //mysql_query ($query_save);
+            $conn->query($query_save);
           };
 
           //-------------------------------------------------------
@@ -142,7 +159,8 @@
             $query_insert = "INSERT INTO $db_table_to_show VALUES ('0','New Menedjer', '2019-05-09','New Product','Plenka','70','80','1000','12','3','217.3',
                                       '500','3.5','1','0','0','0','0','0','0','0',
                                       '0','0','0','0','0','0','0')";
-            mysql_query ($query_insert);
+            //mysql_query ($query_insert);
+            $conn->query($query_insert);
           };
 
           //-------------------------------------------------------
@@ -151,16 +169,20 @@
              //выбор записи с $qr_id=$a;
 
              // определяем число строк (записей) в таблице
-             $get_num_str = mysql_query("SELECT COUNT(*) FROM $db_table_to_show") or die(mysql_error());
-             $num_str = mysql_fetch_array( $get_num_str );
+             //$get_num_str = mysql_query("SELECT COUNT(*) FROM $db_table_to_show") or die(mysql_error());
+             //$num_str = mysql_fetch_array( $get_num_str );
+             $get_num_str = $conn->query("SELECT COUNT(*) FROM $db_table_to_show") or die(mysql_error());
+             $num_str = mysqli_fetch_array( $get_num_str );
              //в $num_str['0'] содержится число строк в таблице  
 
 
              //запрос на выборку данных
-             $qr_result = mysql_query("SELECT * FROM $db_table_to_show WHERE id in ($qr_id) LIMIT 1") or die(mysql_error());
+             //$qr_result = mysql_query("SELECT * FROM $db_table_to_show WHERE id in ($qr_id) LIMIT 1") or die(mysql_error());
+             $qr_result = $conn->query("SELECT * FROM $db_table_to_show WHERE id in ($qr_id) LIMIT 1") or die(mysql_error());
 
              //считываем  данные
-             $data=mysql_fetch_array($qr_result);
+             //$data=mysql_fetch_array($qr_result);
+             $data=mysqli_fetch_array($qr_result);
          
           
              //соответсвие полей в таблице считанным данным (коментарии) 
@@ -214,7 +236,8 @@
 
           //-----------------------------------------------------------------------------
           // закрываем соединение с сервером  базы данных
-          mysql_close($connect_to_db);
+          //mysql_close($connect_to_db);
+          $conn->close();
     }
     else echo "table id not set !";
 
